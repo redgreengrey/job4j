@@ -23,5 +23,3 @@ public class Calculator {
         return this.result;
     }
 }
-//все ок! ну теперь да, а это изза переименования классов?
-// хсорош:)

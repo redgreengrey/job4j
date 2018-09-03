@@ -4,9 +4,9 @@ package ru.job4j.fit;
  * Программа расчета идеального веса.
  */
 public class Fit {
-
     /**
      * Идеальный вес для мужщины.
+     *
      * @param height Рост.
      * @return идеальный вес.
      */
@@ -16,6 +16,7 @@ public class Fit {
 
     /**
      * Идеальный вес для женщины.
+     *
      * @param height Рост.
      * @return идеальный вес.
      */

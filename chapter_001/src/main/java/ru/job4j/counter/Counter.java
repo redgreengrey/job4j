@@ -10,7 +10,6 @@ public class Counter {
                 result = result + i;
             }
         }
-
         return result;
     }
 }
