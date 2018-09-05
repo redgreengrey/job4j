@@ -1,5 +1,9 @@
 package ru.job4j.professions;
 
 public class Diagnose {
-    String sickness;
+    private String sickness;
+
+    public String getSickness() {
+        return sickness;
+    }
 }

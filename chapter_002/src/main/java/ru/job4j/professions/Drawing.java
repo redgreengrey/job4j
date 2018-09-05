@@ -1,5 +1,9 @@
 package ru.job4j.professions;
 
 public class Drawing {
-    String drawing;
+    private String drawing;
+
+    public String getDrawing() {
+        return drawing;
+    }
 }

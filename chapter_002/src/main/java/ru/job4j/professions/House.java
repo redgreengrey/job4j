@@ -1,5 +1,9 @@
 package ru.job4j.professions;
 
 public class House {
-    String houseType;
+    private String houseType;
+
+    public String getHouseType() {
+        return houseType;
+    }
 }
