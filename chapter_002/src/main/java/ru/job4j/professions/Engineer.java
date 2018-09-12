@@ -5,5 +5,7 @@ public class Engineer extends Profession {
         super(name, profession);
     }
 
-    public Drawing buildAHouse(House house) { return null;}
+    public Drawing buildAHouse(House house) {
+        return null;
+    }
 }
