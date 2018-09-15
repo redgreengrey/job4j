@@ -1,22 +1,39 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Tracker {
     private Item[] items = new Item[100];
     private int position = 0;
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
-    public Item add(Item item) {
+    /**
+     * Добавление заявки
+     *
+     * @param item
+     */
+    public void add(Item item) {
         item.setId(this.generateId());
         this.items[position++] = item;
-        return item;
     }
 
+    /**
+     * Создание произвольного значения для id
+     *
+     * @return String
+     */
     private String generateId() {
-        return String.valueOf(System.currentTimeMillis() + random.nextInt());
+        return String.valueOf(System.currentTimeMillis() + RANDOM.nextInt());
     }
 
+    /**
+     * Изменение заявки по id
+     *
+     * @param id
+     * @param item
+     */
     public void update(String id, Item item) {
         for (int i = 0; i != position; i++) {
             if (items[i].getId().equals(findById(id).getId())) {
@@ -26,6 +43,12 @@ public class Tracker {
         }
     }
 
+    /**
+     * Получение заявки по id
+     *
+     * @param id id заявки
+     * @return Item
+     */
     public Item findById(String id) {
         Item result = null;
         for (Item item : items) {
@@ -37,32 +60,46 @@ public class Tracker {
         return result;
     }
 
-    public Item[] findByName(String key) {
-        Item[] result = null;
-        for (int i = 0; i < items.length; i++) {
-            Item item = items[i];
+    /**
+     * Нахождение заявки по имени
+     *
+     * @param key имя заявки
+     * @return Item
+     */
+    public List<Item> findByName(String key) {
+        List<Item> result = new ArrayList<>();
+        for (Item item : this.items) {
             if (item != null && item.getName().equals(key)) {
-                result[i] = item;
+                result.add(item);
             }
         }
         return result;
     }
 
 
-    public void delete(Item item) {
-        for (int i = 0; i != position; i++) {
-            if (items[i].equals(findById(item.getId()))) {
-                this.items[i] = null;
+    /**
+     * Удаление заявок
+     *
+     * @param id id заявки
+     */
+    public void delete(String id) {
+        for (int i = 0; i < position; i++) {
+            if ((this.items[i] != null) && (this.items[i].getId().equals(id))) {
+                System.arraycopy(items, i + 1, items, i, items.length - i - 1);
+                position--;
                 break;
             }
         }
     }
 
+    /**
+     * Получение массива заявок
+     *
+     * @return Item[]
+     */
     public Item[] getAll() {
         Item[] result = new Item[this.position];
-        for (int index = 0; index < this.position; index++) {
-            result[index] = this.items[index];
-        }
+        System.arraycopy(this.items, 0, result, 0, this.position);
         return result;
     }
 }
