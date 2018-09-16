@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -38,6 +39,7 @@ public class Tracker {
         for (int i = 0; i != position; i++) {
             if (items[i].getId().equals(findById(id).getId())) {
                 this.items[i] = item;
+                this.items[i].setId(id);
                 break;
             }
         }
@@ -66,14 +68,16 @@ public class Tracker {
      * @param key имя заявки
      * @return Item
      */
-    public List<Item> findByName(String key) {
-        List<Item> result = new ArrayList<>();
-        for (Item item : this.items) {
-            if (item != null && item.getName().equals(key)) {
-                result.add(item);
+    public Item[] findByName(String key) {
+        Item[] result = new Item[position];
+        int max = 0;
+        for (int i = 0; i < position; i++) {
+            if ((this.items[i] != null) && (this.items[i].getName().equals(key))) {
+                result[max] = items[i];
+                max++;
             }
         }
-        return result;
+        return Arrays.copyOf(result, max);
     }
 
 
@@ -98,8 +102,6 @@ public class Tracker {
      * @return Item[]
      */
     public Item[] getAll() {
-        Item[] result = new Item[this.position];
-        System.arraycopy(this.items, 0, result, 0, this.position);
-        return result;
+        return Arrays.copyOf(this.items, this.position);
     }
 }

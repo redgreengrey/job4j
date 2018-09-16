@@ -62,11 +62,10 @@ public class TrackerTest {
     public void whenFindByNameThenReturnItem() {
         Tracker tracker = new Tracker();
         Item first = new Item("item1", "item1Description", 12L);
-        Item second = new Item("item2", "item2Description", 123L);
         tracker.add(first);
-        tracker.add(second);
-        Item expected = new Item("item1", "item1Description", 12L);
-        assertThat(tracker.findById(first.getId()).getName(), is(expected.getName()));
+        Item[] expected = new Item[1];
+        expected[0] = first;
+        assertThat(tracker.findByName(first.getName()), is(expected));
     }
 
     @Test
