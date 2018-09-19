@@ -7,6 +7,11 @@ public class Item {
     private long created;
     private String[] comments;
 
+    public Item(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Item(String name, String description, long created) {
         this.name = name;
         this.description = description;
