@@ -47,7 +47,7 @@ public class StartUI {
             } else if (SHOW.equals(answer)) {
                 this.showItem();
             } else if (EDIT.equals(answer)) {
-                this.showItem();
+                this.editItem();
             } else if (DELETE.equals(answer)) {
                 this.deleteItem();
             } else if (FINDBYID.equals(answer)) {
@@ -77,7 +77,6 @@ public class StartUI {
      */
     private void showItem() {
         System.out.println("------------ Список заявок --------------");
-//        this.tracker.getAll();
         for (Item item : this.tracker.getAll()) {
             System.out.println("Имя заявки - " + item.getName());
             System.out.println("Описание заявки - " + item.getDescription());
@@ -114,7 +113,6 @@ public class StartUI {
     private void findItemById() {
         System.out.println("------------ Поиск заявки по id --------------");
         String idToFind = this.input.ask("------------ Введите id заявки --------------");
-
         System.out.println("Искомая заявка - " + this.tracker.findById(idToFind).getName());
     }
 
@@ -124,7 +122,6 @@ public class StartUI {
     private void findItemByName() {
         System.out.println("------------ Поиск заявки по имени --------------");
         String name = this.input.ask("------------ Введите имя заявки --------------");
-
         System.out.println("------------ Найдены следующие заявки ------------");
         for (Item item : this.tracker.findByName(name)) {
             System.out.println(item.getName());
