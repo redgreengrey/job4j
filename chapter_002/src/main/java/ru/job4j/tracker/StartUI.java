@@ -61,6 +61,21 @@ public class StartUI {
     }
 
     /**
+     * Метод отображающий основной цикл программы
+     */
+    private void showMenu() {
+        System.out.println("Меню.");
+        System.out.println("0. Добавить новую заявку");
+        System.out.println("1. Показать все заявки");
+        System.out.println("2. Изменить заявку");
+        System.out.println("3. Удалить заявку");
+        System.out.println("4. Найти заявку по id");
+        System.out.println("5. Найти заявки по имени");
+        System.out.println("6. Выйти из программы");
+        System.out.println("Выберите действие: ");
+    }
+
+    /**
      * Метод реализует добавления новый заявки в хранилище.
      */
     private void createItem() {
@@ -69,7 +84,7 @@ public class StartUI {
         String desc = this.input.ask("Введите описание заявки :");
         Item item = new Item(name, desc);
         this.tracker.add(item);
-        System.out.println("------------ Новая заявка с id : " + item.getId() + " -----------");
+        System.out.println("------------ Добавлена новая заявка с id : " + item.getId() + " -----------");
     }
 
     /**
@@ -82,29 +97,6 @@ public class StartUI {
             System.out.println("Описание заявки - " + item.getDescription());
         }
         System.out.println("------------ Конец списка заявок --------------");
-    }
-
-    /**
-     * Метод реализует изменение выбранной заявки
-     */
-    private void editItem() {
-        System.out.println("------------ Изменение новой заявки --------------");
-        String idOfUpdated = this.input.ask("------------ Введите id заявки, которую следует изменить --------------");
-        String nameOfNew = this.input.ask("------------ Введите имя новой заявки --------------");
-        String descOfNew = this.input.ask("------------ Введите описание новой заявки --------------");
-        Item item = new Item(nameOfNew, descOfNew);
-        this.tracker.update(idOfUpdated, item);
-        System.out.println("------------ Заявка изменена --------------");
-    }
-
-    /**
-     * Метод реализует удаление выбранной заявки по id
-     */
-    private void deleteItem() {
-        System.out.println("------------ Удаление заявки --------------");
-        String toBeDeleted = this.input.ask("------------ Введите id заявки, которую следует удалить --------------");
-        this.tracker.delete(toBeDeleted);
-        System.out.println("------------ Заявка удалена --------------");
     }
 
     /**
@@ -126,20 +118,38 @@ public class StartUI {
         for (Item item : this.tracker.findByName(name)) {
             System.out.println(item.getName());
         }
-
     }
 
+    /**
+     * Метод реализует удаление выбранной заявки по id
+     */
+    private void deleteItem() {
+        System.out.println("------------ Удаление элемента по ID ------------");
+        String id = this.input.ask("Введите Id заявки : ");
+        if (this.tracker.delete(id)) {
+            System.out.println("Заявка удалена");
+        } else {
+            System.out.println("Заявка по id \"" + id + "\" не найдена");
+        }
+    }
 
-    private void showMenu() {
-        System.out.println("Меню.");
-        System.out.println("0. Добавить новую заявку");
-        System.out.println("1. Показать все заявки");
-        System.out.println("2. Изменить заявку");
-        System.out.println("3. Удалить заявку");
-        System.out.println("4. Найти заявку по id");
-        System.out.println("5. Найти заявки по имени");
-        System.out.println("6. Выйти из программы");
-        System.out.println("Выберите действие: ");
+    /**
+     * Метод реализует изменение выбранной заявки
+     */
+    private void editItem() {
+        System.out.println("------------ Изменение новой заявки --------------");
+        String idOfUpdated = this.input.ask("------------ Введите id заявки, которую следует изменить --------------");
+        if (this.tracker.findById(idOfUpdated) != null) {
+            String nameOfNew = this.input.ask("------------ Введите имя новой заявки --------------");
+            String descOfNew = this.input.ask("------------ Введите описание новой заявки --------------");
+            Item item = new Item(nameOfNew, descOfNew);
+            this.tracker.update(idOfUpdated, item);
+            System.out.println("------------ Заявка изменена --------------");
+        } else {
+            System.out.println("------------ Заявка не найдена --------------");
+//        this.tracker.update(idOfUpdated, item);
+//        System.out.println("------------ Заявка изменена --------------");
+        }
     }
 
     /**
@@ -151,3 +161,5 @@ public class StartUI {
         new StartUI(new ConsoleInput(), new Tracker()).init();
     }
 }
+
+

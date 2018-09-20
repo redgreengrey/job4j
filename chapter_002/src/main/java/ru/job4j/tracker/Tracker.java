@@ -35,14 +35,19 @@ public class Tracker {
      * @param id
      * @param item
      */
-    public void update(String id, Item item) {
-        for (int i = 0; i != position; i++) {
-            if (items[i].getId().equals(findById(id).getId())) {
-                this.items[i] = item;
-                this.items[i].setId(id);
-                break;
+    public boolean update(String id, Item item) {
+        boolean result = false;
+        if (item != null) {
+            result = true;
+            for (int i = 0; i != position; i++) {
+                if (items[i].getId().equals(findById(id).getId())) {
+                    this.items[i] = item;
+                    this.items[i].setId(id);
+                    break;
+                }
             }
         }
+        return result;
     }
 
     /**
@@ -86,14 +91,17 @@ public class Tracker {
      *
      * @param id id заявки
      */
-    public void delete(String id) {
+    public boolean delete(String id) {
+        boolean result = false;
         for (int i = 0; i < position; i++) {
             if ((this.items[i] != null) && (this.items[i].getId().equals(id))) {
                 System.arraycopy(items, i + 1, items, i, items.length - i - 1);
                 position--;
+                result = true;
                 break;
             }
         }
+        return result;
     }
 
     /**

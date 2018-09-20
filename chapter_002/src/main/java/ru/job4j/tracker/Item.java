@@ -7,6 +7,11 @@ public class Item {
     private long created;
     private String[] comments;
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
