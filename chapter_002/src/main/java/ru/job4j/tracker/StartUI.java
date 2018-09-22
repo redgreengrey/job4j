@@ -105,8 +105,9 @@ public class StartUI {
     private void findItemById() {
         System.out.println("------------ Поиск заявки по id --------------");
         String idToFind = this.input.ask("------------ Введите id заявки --------------");
-        if (this.tracker.findById(idToFind) != null) {
-            System.out.println("Искомая заявка - " + this.tracker.findById(idToFind).getName());
+        Item item = this.tracker.findById(idToFind);
+        if (item != null) {
+            System.out.println("Искомая заявка - " + this.tracker.findById(idToFind));
         } else {
             System.out.println("------------ Заявка с id = " + idToFind + " не найдена --------------");
         }
@@ -118,9 +119,14 @@ public class StartUI {
     private void findItemByName() {
         System.out.println("------------ Поиск заявки по имени --------------");
         String name = this.input.ask("------------ Введите имя заявки --------------");
-        System.out.println("------------ Найдены следующие заявки ------------");
-        for (Item item : this.tracker.findByName(name)) {
-            System.out.println(item.getName());
+        Item[] items = this.tracker.findByName(name);
+        if (items != null) {
+            for (Item item : items) {
+                System.out.println("------------ Найдены следующие заявки ------------");
+                System.out.println(item);
+            }
+        } else {
+            System.out.println("------------ Заявок с таким именем не найдено --------------");
         }
     }
 
@@ -151,8 +157,6 @@ public class StartUI {
             System.out.println("------------ Заявка изменена --------------");
         } else {
             System.out.println("------------ Заявка не найдена --------------");
-//        this.tracker.update(idOfUpdated, item);
-//        System.out.println("------------ Заявка изменена --------------");
         }
     }
 
@@ -165,5 +169,3 @@ public class StartUI {
         new StartUI(new ConsoleInput(), new Tracker()).init();
     }
 }
-
-
