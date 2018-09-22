@@ -120,7 +120,7 @@ public class StartUI {
         System.out.println("------------ Поиск заявки по имени --------------");
         String name = this.input.ask("------------ Введите имя заявки --------------");
         Item[] items = this.tracker.findByName(name);
-        if (items != null) {
+        if (items.length > 0) {
             for (Item item : items) {
                 System.out.println("------------ Найдены следующие заявки ------------");
                 System.out.println(item);
