@@ -147,7 +147,7 @@ public class StartUI {
      * Метод реализует изменение выбранной заявки
      */
     private void editItem() {
-        System.out.println("------------ Изменение новой заявки --------------");
+        System.out.println("------------ Изменение заявки --------------");
         String idOfUpdated = this.input.ask("------------ Введите id заявки, которую следует изменить --------------");
         if (this.tracker.findById(idOfUpdated) != null) {
             String nameOfNew = this.input.ask("------------ Введите имя новой заявки --------------");
