@@ -1,22 +1,42 @@
 package ru.job4j.tracker;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class StartUITest {
+    private final PrintStream stdout = System.out;
+    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    private Tracker tracker;
+
+    @Before
+    public void loadOutput() {
+        tracker = new Tracker();
+        System.out.println("execute before method");
+        System.setOut(new PrintStream(this.out));
+    }
+
+    @After
+    public void backOutput() {
+        System.setOut(this.stdout);
+        System.out.println("execute after method");
+    }
+
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Tracker tracker = new Tracker();     // создаём Tracker
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});   //создаём StubInput с последовательностью действий
-        new StartUI(input, tracker).init();     //   создаём StartUI и вызываем метод init()
-        assertThat(tracker.getAll()[0].getName(), is("test name")); // проверяем, что нулевой элемент массива в трекере содержит имя, введённое при эмуляции.
+        Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
+        new StartUI(input, tracker).init();
+        assertThat(tracker.getAll()[0].getName(), is("test name"));
     }
 
     @Test
     public void whenUserUpdateItemThenTraackerHasUpdatedValue() {
-        Tracker tracker = new Tracker();
         Item item = new Item("test name", "description");
         tracker.add(item);
         Input input = new StubInput(new String[]{"2", item.getId(), "test replace", "заменили заявку", "6"});
@@ -26,7 +46,6 @@ public class StartUITest {
 
     @Test
     public void whenUserDeleteItemThenTrackerHasNoSuchItem() {
-        Tracker tracker = new Tracker();
         Item first = new Item("item name", "item description");
         Item second = new Item("item name 2", "item description 2");
         tracker.add(first);
@@ -38,7 +57,6 @@ public class StartUITest {
 
     @Test
     public void whenUserFindItemByIdThenTrackerFindIt() {
-        Tracker tracker = new Tracker();
         Item item = new Item("item", "desc");
         tracker.add(item);
         Input input = new StubInput(new String[]{"4", item.getId(), "1", "6"});
@@ -48,7 +66,6 @@ public class StartUITest {
 
     @Test
     public void whenUserFindItemByNameThenTrackerFindIt() {
-        Tracker tracker = new Tracker();
         Item item = new Item("item", "desc");
         tracker.add(item);
         Input input = new StubInput(new String[]{"5", item.getName(), "1", "6"});
