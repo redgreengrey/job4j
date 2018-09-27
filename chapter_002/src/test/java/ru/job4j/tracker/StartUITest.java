@@ -14,6 +14,18 @@ public class StartUITest {
     private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private Tracker tracker;
+    private final String lineSeparator = System.lineSeparator();
+    private final String menu = new StringBuilder()
+            .append("Меню.").append(lineSeparator)
+            .append("0. Добавить новую заявку").append(lineSeparator)
+            .append("1. Показать все заявки").append(lineSeparator)
+            .append("2. Изменить заявку").append(lineSeparator)
+            .append("3. Удалить заявку").append(lineSeparator)
+            .append("4. Найти заявку по id").append(lineSeparator)
+            .append("5. Найти заявки по имени").append(lineSeparator)
+            .append("6. Выйти из программы").append(lineSeparator)
+            .append("Выберите действие: ").append(lineSeparator)
+            .toString();
 
     @Before
     public void loadOutput() {
@@ -26,6 +38,47 @@ public class StartUITest {
     public void backOutput() {
         System.setOut(this.stdout);
         System.out.println("execute after method");
+    }
+
+    @Test
+    public void whenShowMenuThenTrackerShowMenu() {
+        Input input = new StubInput(new String[]{"6"});
+        tracker = new Tracker();
+        new StartUI(input, tracker).init();
+        assertThat(
+                new String(out.toByteArray()),
+                is(
+                        new StringBuilder()
+                                .append(menu)
+                                .toString()
+                )
+        );
+    }
+
+    @Test
+    public void whenShowMenuAndShowAllItemsThenTrackerDoIt() {
+        Item first = new Item("itemName", "desc", 123L);
+        Item second = new Item("itemName2", "desc", 1234L);
+        tracker.add(first);
+        tracker.add(second);
+        Input input = new StubInput(new String[]{"1", "6"});
+        new StartUI(input, tracker).init();
+        String expect = new StringBuilder()
+                .append(menu)
+                .append("------------ Список заявок --------------").append(lineSeparator)
+                .append(printItem(first)).append(lineSeparator)
+                .append(printItem(second)).append(lineSeparator)
+                .append("------------ Конец списка заявок --------------").append(lineSeparator)
+                .append(menu)
+                .toString();
+        assertThat(new String(out.toByteArray()), is(expect));
+    }
+
+    private String printItem(Item item) {
+        return new StringBuilder()
+                .append("Имя заявки - " + item.getName()).append(lineSeparator)
+                .append("Описание заявки - " + item.getDescription())
+                .toString();
     }
 
     @Test
