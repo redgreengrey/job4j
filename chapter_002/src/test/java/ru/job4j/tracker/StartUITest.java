@@ -82,6 +82,49 @@ public class StartUITest {
     }
 
     @Test
+    public void whenFindByIdThenTrackerHasThatItem() {
+        Item first = new Item("itemName", "itemDesc", 1L);
+        tracker.add(first);
+        Input input = new StubInput(new String[]{"4", first.getId(), "6"});
+        new StartUI(input, tracker).init();
+        String expect = new StringBuilder()
+                .append(menu)
+                .append("------------ Поиск заявки по id --------------").append(lineSeparator)
+//                .append("------------ Введите id заявки --------------").append(lineSeparator)
+//                .append(first.getId()).append(lineSeparator)
+                .append("Искомая заявка - ").append("Item{"
+                        + "id='" + first.getId() + '\''
+                        + ", name='" + first.getName() + '\''
+                        + ", description='" + first.getDescription() + '\''
+                        + '}').append(lineSeparator)
+                .append(menu)
+                .toString();
+        assertThat(new String(out.toByteArray()), is(expect));
+    }
+
+    @Test
+    public void whenfindItemByNameThanTrackerHasThatItem() {
+        Item first = new Item("item", "description", 111L);
+        tracker.add(first);
+        Input input = new StubInput(new String[]{"5", first.getName(), "6"});
+        new StartUI(input, tracker).init();
+        String expect = new StringBuilder()
+                .append(menu)
+                .append("------------ Поиск заявки по имени --------------").append(lineSeparator)
+//                .append("------------ Введите имя заявки --------------").append(lineSeparator)
+//                .append("------------ Введите имя заявки --------------").append(lineSeparator)
+                .append("------------ Найдены следующие заявки ------------").append(lineSeparator)
+                .append("Item{"
+                        + "id='" + first.getId() + '\''
+                        + ", name='" + first.getName() + '\''
+                        + ", description='" + first.getDescription() + '\''
+                        + '}').append(lineSeparator)
+                .append(menu)
+                .toString();
+        assertThat(new String(out.toByteArray()), is(expect));
+    }
+
+    @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
         new StartUI(input, tracker).init();
