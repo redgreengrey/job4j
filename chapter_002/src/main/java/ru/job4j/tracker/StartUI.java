@@ -32,19 +32,10 @@ public class StartUI {
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions();
-        int key;
         do {
             menu.show();
-            key = Integer.valueOf(this.input.ask("Выберите номер пункта меню:"));
-            if (key >= 0 && key < 6) {
-                menu.select(key);
-            } else if (key == 6) {
-                System.out.println("Выход из программы.");
-            } else {
-                System.out.println("______________________________");
-                System.out.println("Неверный номер. Поробуйте еще!");
-            }
-        } while (key != 6);
+            menu.select(input.ask("Выберите номер пункта меню:", menu.getRange()));
+        } while (!"y".equals(this.input.ask("Выйти? (y): ")));
     }
 
     /**

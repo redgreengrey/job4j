@@ -35,7 +35,7 @@ public class Item {
         return name;
     }
 
-    public String getDescription() {
+    public String getDesc() {
         return description;
     }
 

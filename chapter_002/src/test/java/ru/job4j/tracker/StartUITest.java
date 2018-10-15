@@ -77,7 +77,7 @@ public class StartUITest {
     private String printItem(Item item) {
         return new StringBuilder()
                 .append("Имя заявки - " + item.getName()).append(lineSeparator)
-                .append("Описание заявки - " + item.getDescription())
+                .append("Описание заявки - " + item.getDesc())
                 .toString();
     }
 
@@ -90,12 +90,10 @@ public class StartUITest {
         String expect = new StringBuilder()
                 .append(menu)
                 .append("------------ Поиск заявки по id --------------").append(lineSeparator)
-//                .append("------------ Введите id заявки --------------").append(lineSeparator)
-//                .append(first.getId()).append(lineSeparator)
                 .append("Искомая заявка - ").append("Item{"
                         + "id='" + first.getId() + '\''
                         + ", name='" + first.getName() + '\''
-                        + ", description='" + first.getDescription() + '\''
+                        + ", description='" + first.getDesc() + '\''
                         + '}').append(lineSeparator)
                 .append(menu)
                 .toString();
@@ -111,13 +109,11 @@ public class StartUITest {
         String expect = new StringBuilder()
                 .append(menu)
                 .append("------------ Поиск заявки по имени --------------").append(lineSeparator)
-//                .append("------------ Введите имя заявки --------------").append(lineSeparator)
-//                .append("------------ Введите имя заявки --------------").append(lineSeparator)
                 .append("------------ Найдены следующие заявки ------------").append(lineSeparator)
                 .append("Item{"
                         + "id='" + first.getId() + '\''
                         + ", name='" + first.getName() + '\''
-                        + ", description='" + first.getDescription() + '\''
+                        + ", description='" + first.getDesc() + '\''
                         + '}').append(lineSeparator)
                 .append(menu)
                 .toString();
