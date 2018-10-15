@@ -16,15 +16,15 @@ public class StartUITest {
     private Tracker tracker;
     private final String lineSeparator = System.lineSeparator();
     private final String menu = new StringBuilder()
-            .append("Меню.").append(lineSeparator)
-            .append("0. Добавить новую заявку").append(lineSeparator)
+            .append("------------------ Меню ------------------").append(lineSeparator)
+            .append("0. Добавление новой заявки").append(lineSeparator)
             .append("1. Показать все заявки").append(lineSeparator)
             .append("2. Изменить заявку").append(lineSeparator)
             .append("3. Удалить заявку").append(lineSeparator)
             .append("4. Найти заявку по id").append(lineSeparator)
             .append("5. Найти заявки по имени").append(lineSeparator)
-            .append("6. Выйти из программы").append(lineSeparator)
-            .append("Выберите действие: ").append(lineSeparator)
+            .append("6. Выход из программы").append(lineSeparator)
+            .append("-----------------------------------------").append(lineSeparator)
             .toString();
 
     @Before
@@ -42,7 +42,7 @@ public class StartUITest {
 
     @Test
     public void whenShowMenuThenTrackerShowMenu() {
-        Input input = new StubInput(new String[]{"6"});
+        Input input = new StubInput(new String[]{"6", "y"});
         tracker = new Tracker();
         new StartUI(input, tracker).init();
         assertThat(
@@ -61,7 +61,7 @@ public class StartUITest {
         Item second = new Item("itemName2", "desc", 1234L);
         tracker.add(first);
         tracker.add(second);
-        Input input = new StubInput(new String[]{"1", "6"});
+        Input input = new StubInput(new String[]{"1", "6", "y"});
         new StartUI(input, tracker).init();
         String expect = new StringBuilder()
                 .append(menu)
@@ -85,7 +85,7 @@ public class StartUITest {
     public void whenFindByIdThenTrackerHasThatItem() {
         Item first = new Item("itemName", "itemDesc", 1L);
         tracker.add(first);
-        Input input = new StubInput(new String[]{"4", first.getId(), "6"});
+        Input input = new StubInput(new String[]{"4", first.getId(), "6", "y"});
         new StartUI(input, tracker).init();
         String expect = new StringBuilder()
                 .append(menu)
@@ -122,7 +122,7 @@ public class StartUITest {
 
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
+        Input input = new StubInput(new String[]{"0", "test name", "desc", "6", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.getAll()[0].getName(), is("test name"));
     }

@@ -55,7 +55,7 @@ public class Item {
         this.name = name;
     }
 
-    public void setDescription(String description) {
+    public void setDesc(String description) {
         this.description = description;
     }
 
