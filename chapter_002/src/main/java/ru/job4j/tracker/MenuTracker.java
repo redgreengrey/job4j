@@ -9,11 +9,21 @@ class EditItem implements UserAction {
     }
 
     public void execute(Input input, Tracker tracker) {
+        boolean updated = false;
         System.out.println("------------ Изменение заявки --------------");
         String id = input.ask("Введите id заявки :");
-        String name = input.ask("Введите имя новой заявки :");
-        String desc = input.ask("Введите имя описание новой заявки :");
-        tracker.update(id, new Item(name, desc));
+        if (tracker.findById(id) != null) {
+            updated = true;
+            String name = input.ask("Введите имя новой заявки :");
+            String desc = input.ask("Введите имя описание новой заявки :");
+            Item item = new Item(name, desc);
+            tracker.update(id, item);
+        }
+        if (updated) {
+            System.out.println("------------ Заявка изменена --------------");
+        } else {
+            System.out.println("Заявок с id = " + id + " не найдено");
+        }
         System.out.println("--------------------------------------------");
     }
 
@@ -58,7 +68,7 @@ class FindItemById implements UserAction {
         System.out.println("------------ Найти заявку по id --------------");
         String id = input.ask("Введите id заявки :");
         Item found = tracker.findById(id);
-        if (tracker.findById(id) != null) {
+        if (found != null) {
             System.out.println("Id: " + found.getId() + " Имя: "
                     + found.getName() + " Описание: " + found.getDesc());
         } else {
@@ -68,7 +78,7 @@ class FindItemById implements UserAction {
     }
 
     public String info() {
-        return String.format("%s. %s", this.key(), "Find task by Id.");
+        return String.format("%s. %s", this.key(), "Найти заявку по id");
     }
 }
 
