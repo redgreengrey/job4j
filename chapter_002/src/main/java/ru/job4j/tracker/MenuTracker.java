@@ -3,9 +3,9 @@ package ru.job4j.tracker;
 /**
  * A class that implements the editing of an task by id.
  */
-class EditItem implements UserAction {
-    public int key() {
-        return 2;
+class EditItem extends BaseAction {
+    public EditItem(int key, String name) {
+        super(key, name);
     }
 
     public void execute(Input input, Tracker tracker) {
@@ -26,18 +26,14 @@ class EditItem implements UserAction {
         }
         System.out.println("--------------------------------------------");
     }
-
-    public String info() {
-        return String.format("%s. %s", this.key(), "Изменить заявку");
-    }
 }
 
 /**
  * A class that implements the deleting of an task by id.
  */
-class DeleteItem implements UserAction {
-    public int key() {
-        return 3;
+class DeleteItem extends BaseAction {
+    public DeleteItem(int key, String name) {
+        super(key, name);
     }
 
     public void execute(Input input, Tracker tracker) {
@@ -50,18 +46,14 @@ class DeleteItem implements UserAction {
             System.out.println("Заявок с id = " + id + "не найдено");
         }
     }
-
-    public String info() {
-        return String.format("%s. %s", this.key(), "Удалить заявку");
-    }
 }
 
 /**
  * A class that implements the finding of an task by id.
  */
-class FindItemById implements UserAction {
-    public int key() {
-        return 4;
+class FindItemById extends BaseAction {
+    public FindItemById(int key, String name) {
+        super(key, name);
     }
 
     public void execute(Input input, Tracker tracker) {
@@ -76,18 +68,14 @@ class FindItemById implements UserAction {
         }
         System.out.println("-----------------------------------------");
     }
-
-    public String info() {
-        return String.format("%s. %s", this.key(), "Найти заявку по id");
-    }
 }
 
 /**
  * A class that implements the finding of an task by name.
  */
-class FindItemByName implements UserAction {
-    public int key() {
-        return 5;
+class FindItemByName extends BaseAction {
+    public FindItemByName(int key, String name) {
+        super(key, name);
     }
 
     public void execute(Input input, Tracker tracker) {
@@ -103,10 +91,6 @@ class FindItemByName implements UserAction {
             System.out.println("Заявок с именем " + name + " не нашлось");
         }
         System.out.println("-----------------------------------------");
-    }
-
-    public String info() {
-        return String.format("%s. %s", this.key(), "Найти заявки по имени");
     }
 }
 
@@ -127,13 +111,13 @@ public class MenuTracker {
     }
 
     public void fillActions() {
-        this.actions[0] = this.new AddItem();
-        this.actions[1] = new GetAll();
-        this.actions[2] = new EditItem();
-        this.actions[3] = new DeleteItem();
-        this.actions[4] = new FindItemById();
-        this.actions[5] = new FindItemByName();
-        this.actions[6] = new Exit();
+        this.actions[0] = this.new AddItem(0, "Add item");
+        this.actions[1] = new GetAll(1, "Show all items");
+        this.actions[2] = new EditItem(2, "Edit item");
+        this.actions[3] = new DeleteItem(3, "Delete item");
+        this.actions[4] = new FindItemById(4, "Find item by Id");
+        this.actions[5] = new FindItemByName(5, "Find items by name");
+        this.actions[6] = new Exit(6, "Exit Program");
     }
 
     public void select(int key) {
@@ -161,9 +145,10 @@ public class MenuTracker {
     /**
      * The class that implements the addition of a new task.
      */
-    private class AddItem implements UserAction {
-        public int key() {
-            return 0;
+    private class AddItem extends BaseAction {
+
+        public AddItem(int key, String name) {
+            super(key, name);
         }
 
         public void execute(Input input, Tracker tracker) {
@@ -173,18 +158,14 @@ public class MenuTracker {
             tracker.add(item);
             System.out.println("------------  Новая заявка с id: " + item.getId() + " -----------");
         }
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Добавление новой заявки");
-        }
     }
 
     /**
      * A class that implements getting of all tasks.
      */
-    private static class GetAll implements UserAction {
-        public int key() {
-            return 1;
+    private static class GetAll extends BaseAction {
+        public GetAll(int key, String name) {
+            super(key, name);
         }
 
         public void execute(Input input, Tracker tracker) {
@@ -196,25 +177,15 @@ public class MenuTracker {
             }
             System.out.println("---------------------------------------");
         }
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Показать все заявки");
-        }
     }
 
-    private static class Exit implements UserAction {
-        @Override
-        public int key() {
-            return 6;
+    private static class Exit extends BaseAction {
+        public Exit(int key, String name) {
+            super(key, name);
         }
 
         @Override
         public void execute(Input input, Tracker tracker) {
-        }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Выход из программы");
         }
     }
 }
