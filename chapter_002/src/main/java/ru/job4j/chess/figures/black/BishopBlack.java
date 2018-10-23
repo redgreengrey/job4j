@@ -15,38 +15,19 @@ public class BishopBlack extends Figure {
         super(position);
     }
 
-    @Override
     public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
-        boolean valid = false;
-        Cell[] steps = new Cell[0];
-        int move = Math.abs(source.x - dest.x);
-        if (source.y == dest.y + move && source.x == dest.x + move) {
-            steps = new Cell[move];
-            for (int index = 0; index < steps.length; index++) {
-                steps[index] = Cell.findCell(source.x - index - 1, source.y - index - 1);
-            }
-            valid = true;
-        } else if (source.y == dest.y + move && source.x == dest.x - move) {
-            steps = new Cell[move];
-            for (int index = 0; index < steps.length; index++) {
-                steps[index] = Cell.findCell(source.x + index + 1, source.y - index - 1);
-            }
-            valid = true;
-        } else if (source.y == dest.y - move && source.x == dest.x + move) {
-            steps = new Cell[move];
-            for (int index = 0; index < steps.length; index++) {
-                steps[index] = Cell.findCell(source.x - index - 1, source.y + index + 1);
-            }
-            valid = true;
-        } else if (source.y == dest.y - move && source.x == dest.x - move) {
-            steps = new Cell[move];
-            for (int index = 0; index < steps.length; index++) {
-                steps[index] = Cell.findCell(source.x + index + 1, source.y + index + 1);
-            }
-            valid = true;
-        }
-        if (!valid) {
+        if (!(Math.abs(source.x - dest.x) == Math.abs(source.y - dest.y))) {
             throw new ImpossibleMoveException();
+        }
+        int x = source.x;
+        int y = source.y;
+        Cell[] steps = new Cell[Math.abs(dest.x - x)];
+        int deltaX = x < dest.x ? 1 : -1;
+        int deltaY = y < dest.y ? 1 : -1;
+        for (int i = 0; i < steps.length; i++) {
+            x += deltaX;
+            y += deltaY;
+            steps[i] = Cell.findCell(x, y);
         }
         return steps;
     }

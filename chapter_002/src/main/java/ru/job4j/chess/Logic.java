@@ -14,7 +14,6 @@ import ru.job4j.chess.figures.Figure;
 public class Logic {
     private final Figure[] figures = new Figure[32];
     private int index = 0;
-    private int position;
 
     public void add(Figure figure) {
         this.figures[this.index++] = figure;
@@ -24,18 +23,16 @@ public class Logic {
             FigureNotFoundException {
         boolean rst = false;
         int index = this.findBy(source);
-        int target = this.findBy(dest);
         if (index == -1) {
             throw new FigureNotFoundException();
         }
         Cell[] steps = this.figures[index].way(source, dest);
-        for (int step = 0; step < steps.length; step++) {
-            int empty = findBy(steps[step]);
-            if (empty != -1 || target != -1) {
+        for (Cell step : steps) {
+            if (findBy(step) != -1) {
                 throw new OccupiedWayException();
             }
         }
-        if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
+        if (steps.length > 0) {
             rst = true;
             this.figures[index] = this.figures[index].copy(dest);
         }
