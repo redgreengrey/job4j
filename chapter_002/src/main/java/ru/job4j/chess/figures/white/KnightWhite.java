@@ -5,7 +5,6 @@ import ru.job4j.chess.figures.Cell;
 import ru.job4j.chess.figures.Figure;
 
 /**
- *
  * @author Vlad Dudin
  * @version $Id$
  * @since 0.1
@@ -17,7 +16,7 @@ public class KnightWhite extends Figure {
 
     @Override
     public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
-        return new Cell[] { dest };
+        return new Cell[]{dest};
     }
 
     @Override

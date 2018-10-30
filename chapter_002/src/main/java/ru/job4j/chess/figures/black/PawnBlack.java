@@ -5,7 +5,6 @@ import ru.job4j.chess.figures.Cell;
 import ru.job4j.chess.figures.Figure;
 
 /**
- *
  * @author Vlad Dudin
  * @version $Id$
  * @since 0.1
@@ -19,7 +18,7 @@ public class PawnBlack extends Figure {
     public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
         Cell[] steps = new Cell[0];
         if (source.y == dest.y + 1 && source.x == dest.x) {
-            steps = new Cell[] { dest };
+            steps = new Cell[]{dest};
         }
         return steps;
     }
