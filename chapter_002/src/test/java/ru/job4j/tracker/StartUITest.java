@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import com.sun.corba.se.spi.orbutil.fsm.InputImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,19 +14,18 @@ import static org.junit.Assert.*;
 public class StartUITest {
     private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    private Tracker tracker;
+    private Tracker tracker = new Tracker();
     private final String lineSeparator = System.lineSeparator();
-    private final String menu = new StringBuilder()
-            .append("------------------ Меню ------------------").append(lineSeparator)
-            .append("0. Добавление новой заявки").append(lineSeparator)
-            .append("1. Показать все заявки").append(lineSeparator)
-            .append("2. Изменить заявку").append(lineSeparator)
-            .append("3. Удалить заявку").append(lineSeparator)
-            .append("4. Найти заявку по id").append(lineSeparator)
-            .append("5. Найти заявки по имени").append(lineSeparator)
-            .append("6. Выход из программы").append(lineSeparator)
-            .append("-----------------------------------------").append(lineSeparator)
-            .toString();
+    private final StringBuilder menu = new StringBuilder()
+            .append("------------------ Menu ------------------").append(System.lineSeparator())
+            .append("0 : Add item").append(System.lineSeparator())
+            .append("1 : Show all items").append(System.lineSeparator())
+            .append("2 : Edit item").append(System.lineSeparator())
+            .append("3 : Delete item").append(System.lineSeparator())
+            .append("4 : Find item by Id").append(System.lineSeparator())
+            .append("5 : Find items by name").append(System.lineSeparator())
+            .append("6 : Exit Program").append(System.lineSeparator())
+            .append("-----------------------------------------").append(System.lineSeparator());
 
     @Before
     public void loadOutput() {
@@ -38,6 +38,16 @@ public class StartUITest {
     public void backOutput() {
         System.setOut(this.stdout);
         System.out.println("execute after method");
+    }
+
+    private void addTask(int num) {
+        for (int i = 0; i < num; i++) {
+            this.tracker.add(new Item("name" + i, "desc" + i));
+        }
+    }
+
+    public void whenAddItemThenTrackerHasThatItem() {
+        Input input = new StubInput(new String[]{});
     }
 
     @Test
@@ -56,45 +66,49 @@ public class StartUITest {
     }
 
     @Test
-    public void whenShowMenuAndShowAllItemsThenTrackerDoIt() {
-        Item first = new Item("itemName", "desc", 123L);
-        Item second = new Item("itemName2", "desc", 1234L);
-        tracker.add(first);
-        tracker.add(second);
-        Input input = new StubInput(new String[]{"1", "6", "y"});
-        new StartUI(input, tracker).init();
-        String expect = new StringBuilder()
-                .append(menu)
-                .append("------------ Список заявок --------------").append(lineSeparator)
-                .append(printItem(first)).append(lineSeparator)
-                .append(printItem(second)).append(lineSeparator)
-                .append("------------ Конец списка заявок --------------").append(lineSeparator)
-                .append(menu)
-                .toString();
-        assertThat(new String(out.toByteArray()), is(expect));
+    public void whenThen() {
+
     }
 
-    private String printItem(Item item) {
-        return new StringBuilder()
-                .append("Имя заявки - " + item.getName()).append(lineSeparator)
-                .append("Описание заявки - " + item.getDesc())
-                .toString();
+
+    @Test
+    public void whenShowMenuAndShowAllItemsThenTrackerShowOne() {
+        Item first = new Item("name1", "desc1");
+        tracker.add(first);
+        Input input = new StubInput(new String[]{"1", "n", "6", "y"});
+        new StartUI(input, tracker).init();
+        assertThat(
+                new String(out.toByteArray()),
+                is(
+                        new StringBuilder()
+                                .append(menu)
+                                .append("------------ List of items --------------")
+                                .append(System.lineSeparator())
+                                .append("Id: " + first.getId() + " Name: "
+                                        + first.getName() + " Description: " + first.getDesc())
+                                .append(System.lineSeparator())
+                                .append("---------------------------------------")
+                                .append(System.lineSeparator())
+                                .append(menu)
+                                .toString()
+                )
+        );
     }
 
     @Test
     public void whenFindByIdThenTrackerHasThatItem() {
         Item first = new Item("itemName", "itemDesc", 1L);
         tracker.add(first);
-        Input input = new StubInput(new String[]{"4", first.getId(), "6", "y"});
+        Input input = new StubInput(new String[]{"4", first.getId(), "n", "6", "y"});
         new StartUI(input, tracker).init();
         String expect = new StringBuilder()
                 .append(menu)
-                .append("------------ Поиск заявки по id --------------").append(lineSeparator)
-                .append("Искомая заявка - ").append("Item{"
-                        + "id='" + first.getId() + '\''
-                        + ", name='" + first.getName() + '\''
-                        + ", description='" + first.getDesc() + '\''
-                        + '}').append(lineSeparator)
+                .append("------------ Find item by id --------------").append(lineSeparator)
+                .append("Id: " + first.getId() + " Name: "
+                        + first.getName() + " Description: " + first.getDesc())
+                .append(System.lineSeparator())
+                .append("-----------------------------------------")
+                .append(System.lineSeparator())
                 .append(menu)
                 .toString();
         assertThat(new String(out.toByteArray()), is(expect));
@@ -104,17 +118,16 @@ public class StartUITest {
     public void whenfindItemByNameThanTrackerHasThatItem() {
         Item first = new Item("item", "description", 111L);
         tracker.add(first);
-        Input input = new StubInput(new String[]{"5", first.getName(), "6"});
+        Input input = new StubInput(new String[]{"5", first.getName(), "n", "6", "y"});
         new StartUI(input, tracker).init();
         String expect = new StringBuilder()
                 .append(menu)
-                .append("------------ Поиск заявки по имени --------------").append(lineSeparator)
-                .append("------------ Найдены следующие заявки ------------").append(lineSeparator)
-                .append("Item{"
-                        + "id='" + first.getId() + '\''
-                        + ", name='" + first.getName() + '\''
-                        + ", description='" + first.getDesc() + '\''
-                        + '}').append(lineSeparator)
+                .append("------------ Find item by name --------------").append(lineSeparator)
+                .append("Id: " + first.getId()
+                        + " Name: " + first.getName()
+                        + " Description: " + first.getDesc()).append(lineSeparator)
+                .append("-----------------------------------------")
+                .append(System.lineSeparator())
                 .append(menu)
                 .toString();
         assertThat(new String(out.toByteArray()), is(expect));
@@ -122,16 +135,16 @@ public class StartUITest {
 
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "6", "y"});
+        Input input = new StubInput(new String[]{"0", "test name", "desc", "n", "6", "y"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.getAll()[0].getName(), is("test name"));
+        assertThat(tracker.getAll().get(0).getName(), is("test name"));
     }
 
     @Test
     public void whenUserUpdateItemThenTraackerHasUpdatedValue() {
         Item item = new Item("test name", "description");
         tracker.add(item);
-        Input input = new StubInput(new String[]{"2", item.getId(), "test replace", "заменили заявку", "6"});
+        Input input = new StubInput(new String[]{"2", item.getId(), "test replace", "item changed", "n", "6", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item.getId()).getName(), is("test replace"));
     }
@@ -142,16 +155,16 @@ public class StartUITest {
         Item second = new Item("item name 2", "item description 2");
         tracker.add(first);
         tracker.add(second);
-        Input input = new StubInput(new String[]{"3", first.getId(), "1", "6"});
+        Input input = new StubInput(new String[]{"3", first.getId(), "n", "1", "n", "6", "y"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.getAll()[0].getName(), is(second.getName()));
+        assertThat(tracker.getAll().get(0).getName(), is(second.getName()));
     }
 
     @Test
     public void whenUserFindItemByIdThenTrackerFindIt() {
         Item item = new Item("item", "desc");
         tracker.add(item);
-        Input input = new StubInput(new String[]{"4", item.getId(), "1", "6"});
+        Input input = new StubInput(new String[]{"4", item.getId(), "n", "1", "n", "6", "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item.getId()).getName(), is("item"));
     }
@@ -160,8 +173,8 @@ public class StartUITest {
     public void whenUserFindItemByNameThenTrackerFindIt() {
         Item item = new Item("item", "desc");
         tracker.add(item);
-        Input input = new StubInput(new String[]{"5", item.getName(), "1", "6"});
+        Input input = new StubInput(new String[]{"5", item.getName(), "n", "1", "n", "6", "y"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findByName("item")[0], is(item));
+        assertThat(tracker.findByName("item").get(0), is(item));
     }
 }

@@ -1,13 +1,12 @@
 package ru.job4j.tracker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class Tracker {
-    private Item[] items = new Item[100];
-    private int position = 0;
+    private List<Item> items = new ArrayList<>();
+//    private int position = 0;
     private static final Random RANDOM = new Random();
 
     /**
@@ -16,8 +15,8 @@ public class Tracker {
      * @param item
      */
     public void add(Item item) {
-        item.setId(this.generateId());
-        this.items[position++] = item;
+        item.setId(generateId());
+        this.items.add(item);
     }
 
     /**
@@ -39,13 +38,19 @@ public class Tracker {
         boolean result = false;
         if (item != null) {
             result = true;
-            for (int i = 0; i != position; i++) {
-                if (items[i].getId().equals(findById(id).getId())) {
-                    this.items[i] = item;
-                    this.items[i].setId(id);
-                    break;
+            for (int i = 0; i < this.items.size(); i++) {
+                if (this.items.get(i).getId().equals(id)) {
+                    item.setId(id);
+                    items.set(i, item);
                 }
             }
+//            for (int i = 0; i != position; i++) {
+//                if (items.get(i).getId().equals(findById(id).getId())) {
+//                    this.items.set(i, item);
+//                    this.items.get(i).setId(id);
+//                    break;
+//                }
+//            }
         }
         return result;
     }
@@ -58,7 +63,7 @@ public class Tracker {
      */
     public Item findById(String id) {
         Item result = null;
-        for (Item item : items) {
+        for (Item item : this.items) {
             if (item != null && item.getId().equals(id)) {
                 result = item;
                 break;
@@ -73,16 +78,23 @@ public class Tracker {
      * @param key имя заявки
      * @return Item
      */
-    public Item[] findByName(String key) {
-        Item[] result = new Item[position];
-        int max = 0;
-        for (int i = 0; i < position; i++) {
-            if ((this.items[i] != null) && (this.items[i].getName().equals(key))) {
-                result[max] = items[i];
-                max++;
+    public List<Item> findByName(String key) {
+        List<Item> itemsList = new ArrayList<>();
+        for (Item item : this.items) {
+            if (item.getName().equals(key)) {
+                itemsList.add(item);
             }
         }
-        return Arrays.copyOf(result, max);
+//        Item[] result = new Item[position];
+//        int max = 0;
+//        for (int i = 0; i < position; i++) {
+//            if ((this.items.get(i) != null) && (this.items.get(i).getName().equals(key))) {
+//                result[max] = items.get(i);
+//                max++;
+//            }
+//        }
+//        return Arrays.copyOf(result, max);
+        return itemsList;
     }
 
 
@@ -93,10 +105,18 @@ public class Tracker {
      */
     public boolean delete(String id) {
         boolean result = false;
-        for (int i = 0; i < position; i++) {
-            if ((this.items[i] != null) && (this.items[i].getId().equals(id))) {
-                System.arraycopy(items, i + 1, items, i, items.length - i - 1);
-                position--;
+//        for (int i = 0; i < position; i++) {
+//            if ((this.items.get(i) != null) && (this.items.get(i).getId().equals(id))) {
+//                System.arraycopy(items, i + 1, items, i, items.length - i - 1);
+//                position--;
+//                result = true;
+//                break;
+//            }
+//        }
+
+        for (int i = 0; i < this.items.size(); i++) {
+            if (this.items.get(i).getId().equals(id)) {
+                this.items.remove(i);
                 result = true;
                 break;
             }
@@ -109,7 +129,7 @@ public class Tracker {
      *
      * @return Item[]
      */
-    public Item[] getAll() {
-        return Arrays.copyOf(this.items, this.position);
+    public List<Item> getAll() {
+        return this.items;
     }
 }

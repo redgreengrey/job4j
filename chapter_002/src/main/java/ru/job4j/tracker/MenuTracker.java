@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.List;
+
 /**
  * A class that implements the editing of an task by id.
  */
@@ -10,19 +12,19 @@ class EditItem extends BaseAction {
 
     public void execute(Input input, Tracker tracker) {
         boolean updated = false;
-        System.out.println("------------ Изменение заявки --------------");
-        String id = input.ask("Введите id заявки :");
+        System.out.println("------------ Update item --------------");
+        String id = input.ask("Enter item's id");
         if (tracker.findById(id) != null) {
             updated = true;
-            String name = input.ask("Введите имя новой заявки :");
-            String desc = input.ask("Введите имя описание новой заявки :");
+            String name = input.ask("Enter new item name");
+            String desc = input.ask("enter new item description");
             Item item = new Item(name, desc);
             tracker.update(id, item);
         }
         if (updated) {
-            System.out.println("------------ Заявка изменена --------------");
+            System.out.println("------------ Item updated --------------");
         } else {
-            System.out.println("Заявок с id = " + id + " не найдено");
+            System.out.println("Item with id = " + id + " not found");
         }
         System.out.println("--------------------------------------------");
     }
@@ -37,13 +39,13 @@ class DeleteItem extends BaseAction {
     }
 
     public void execute(Input input, Tracker tracker) {
-        System.out.println("------------ Удаление заявки по id --------------");
-        String id = input.ask("Введите id заявки:");
+        System.out.println("------------ Delete item by id --------------");
+        String id = input.ask("Enter item's id");
         boolean deleted = tracker.delete(id);
         if (deleted) {
-            System.out.println("------------ Заявка удалена --------------");
+            System.out.println("------------ item deleted --------------");
         } else {
-            System.out.println("Заявок с id = " + id + "не найдено");
+            System.out.println("Item with id = " + id + " not found");
         }
     }
 }
@@ -57,14 +59,14 @@ class FindItemById extends BaseAction {
     }
 
     public void execute(Input input, Tracker tracker) {
-        System.out.println("------------ Найти заявку по id --------------");
-        String id = input.ask("Введите id заявки :");
+        System.out.println("------------ Find item by id --------------");
+        String id = input.ask("Enter item's id");
         Item found = tracker.findById(id);
         if (found != null) {
-            System.out.println("Id: " + found.getId() + " Имя: "
-                    + found.getName() + " Описание: " + found.getDesc());
+            System.out.println("Id: " + found.getId() + " Name: "
+                    + found.getName() + " Description: " + found.getDesc());
         } else {
-            System.out.println("Заявок с id = " + id + " не найдено");
+            System.out.println("Items with id = " + id + " not found");
         }
         System.out.println("-----------------------------------------");
     }
@@ -79,16 +81,16 @@ class FindItemByName extends BaseAction {
     }
 
     public void execute(Input input, Tracker tracker) {
-        System.out.println("------------ Найти заявку по имени --------------");
-        String name = input.ask("Введите имя заявки :");
-        Item[] items = tracker.findByName(name);
-        if (items.length > 0) {
+        System.out.println("------------ Find item by name --------------");
+        String name = input.ask("Enter item's name :");
+        List<Item> items = tracker.findByName(name);
+        if (((List) items).size() > 0) {
             for (Item item : items) {
-                System.out.println("Id: " + item.getId() + " Имя: "
-                        + item.getName() + " Описание: " + item.getDesc());
+                System.out.println("Id: " + item.getId() + " Name: "
+                        + item.getName() + " Description: " + item.getDesc());
             }
         } else {
-            System.out.println("Заявок с именем " + name + " не нашлось");
+            System.out.println("Items with name " + name + " not found");
         }
         System.out.println("-----------------------------------------");
     }
@@ -125,7 +127,7 @@ public class MenuTracker {
     }
 
     public void show() {
-        System.out.println("------------------ Меню ------------------");
+        System.out.println("------------------ Menu ------------------");
         for (UserAction action : this.actions) {
             if (action != null) {
                 System.out.println(action.info());
@@ -152,11 +154,11 @@ public class MenuTracker {
         }
 
         public void execute(Input input, Tracker tracker) {
-            String name = input.ask("Введите имя заявки: ");
-            String desc = input.ask("Введите описание заявки ");
+            String name = input.ask("Enter item's name: ");
+            String desc = input.ask("Enter item's description");
             Item item = new Item(name, desc);
             tracker.add(item);
-            System.out.println("------------  Новая заявка с id: " + item.getId() + " -----------");
+            System.out.println("------------  New item with id: " + item.getId() + " -----------");
         }
     }
 
@@ -169,11 +171,11 @@ public class MenuTracker {
         }
 
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ Список заявок --------------");
+            System.out.println("------------ List of items --------------");
             for (Item items : tracker.getAll()) {
                 System.out.println(
                         String.format("%s: %s %s: %s %s: %s", "Id", items.getId(),
-                                "Имя", items.getName(), "Описание", items.getDesc()));
+                                "Name", items.getName(), "Description", items.getDesc()));
             }
             System.out.println("---------------------------------------");
         }

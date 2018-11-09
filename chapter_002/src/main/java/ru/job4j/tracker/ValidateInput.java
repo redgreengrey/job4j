@@ -21,9 +21,9 @@ public class ValidateInput implements Input {
                 value = this.input.ask(question, range);
                 invalid = false;
             } catch (MenuOutException moe) {
-                System.out.println("Выберите существующий пункт меню");
+                System.out.println("Choose existing point of menu");
             } catch (NumberFormatException nfe) {
-                System.out.println("Попробуйте еще раз, введите корректные данные");
+                System.out.println("Try again, enter correct data");
             }
         } while (invalid);
         return value;
