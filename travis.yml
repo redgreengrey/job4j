@@ -1,0 +1,12 @@
+language: java
+sudo: false
+
+after success:
+  - bash <(curl -s https://codecov.io.bash)
+
+notifications:
+  email:
+    recipients:
+      - redgreengrey@yandex.ru
+      on-success: never
+      on-failure:always
