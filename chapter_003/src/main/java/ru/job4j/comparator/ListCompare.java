@@ -8,16 +8,18 @@ import java.util.List;
 public class ListCompare implements Comparator<String> {
     @Override
     public int compare(String left, String right) {
-        int leftSize = left.length();
-        int rightSize = right.length();
-        int result = leftSize - rightSize;
-        int min = Math.min(leftSize, rightSize);
-        int index = 0;
-        while (index < min) {
-            if (Character.compare(left.charAt(index), right.charAt(index)) != 0) {
-                result = Character.compare(left.charAt(index), right.charAt(index));
+        char[] leftChar = left.toCharArray();
+        char[] rightChar = right.toCharArray();
+        int minLength = Math.min(leftChar.length, rightChar.length);
+        int result = 0;
+        for (int i = 0; i < minLength; i++) {
+            if (leftChar[i] != rightChar[i]) {
+                result = Character.compare(leftChar[i], rightChar[i]);
+                break;
             }
-            index++;
+        }
+        if (result == 0 && leftChar.length != rightChar.length) {
+            result = Integer.compare(leftChar.length, rightChar.length);
         }
         return result;
     }
