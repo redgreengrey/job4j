@@ -9,4 +9,4 @@ notifications:
     recipients:
       - redgreengrey@yandex.ru
       on-success: never
-      on-failure:always
+      on-failure: always
