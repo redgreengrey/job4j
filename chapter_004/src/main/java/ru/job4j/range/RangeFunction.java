@@ -13,16 +13,4 @@ public class RangeFunction {
         }
         return result;
     }
-
-    List<Double> linearRange(int start, int end) {
-        return range(start, end, (n) -> n);
-    }
-
-    List<Double> quadraticRange(int start, int end) {
-        return range(start, end, (n) -> Math.pow(n, 2));
-    }
-
-    List<Double> logarithmicRange(int start, int end) {
-        return range(start, end, Math::log);
-    }
 }
