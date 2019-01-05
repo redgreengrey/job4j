@@ -18,8 +18,6 @@ public class DepartmentSortTest {
     public void setDirectory() {
         this.depSorter = new DepartmentSort();
         this.directory = new TreeSet<>();
-        this.directory.add("K2");
-        this.directory.add("K1");
         this.directory.add("K1\\SK1");
         this.directory.add("K2\\SK1\\SSK2");
         this.directory.add("K1\\SK2");
