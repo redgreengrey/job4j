@@ -10,13 +10,8 @@ public class DepartmentSort {
      */
     public ArrayList<String> sort(ArrayList<String> source) {
         check(source);
-        source.sort(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareTo(o2);
-            }
-        });
-        return source;
+        Set<String> set = new TreeSet<>(source);
+        return new ArrayList<>(set);
     }
 
     /**
@@ -26,26 +21,10 @@ public class DepartmentSort {
      */
     public List<String> descSort(ArrayList<String> source) {
         check(source);
-        source.sort(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                int result;
-                if (o1.length() == o2.length()) {
-                    result = o2.compareTo(o1);
-                } else {
-                    int size = Math.min(o1.length(), o2.length());
-                    String first = o1.substring(0, size);
-                    String second = o2.substring(0, size);
-                    if (first.compareTo(second) == 0 && o1.length() > o2.length()) {
-                        result = 1;
-                    } else if (first.compareTo(second) == 0 && o1.length() < o2.length()) {
-                        result = -1;
-                    } else {
-                        result = o2.compareTo(o1);
-                    }
-                }
-                return result;
-            }
+        source.sort((o1, o2) -> {
+            int minLen = Math.min(o1.length(), o2.length());
+            int result = -o1.substring(0, minLen).compareTo(o2.substring(0, minLen));
+            return result != 0 ? result : Integer.compare(o1.length(), o2.length());
         });
         return source;
     }

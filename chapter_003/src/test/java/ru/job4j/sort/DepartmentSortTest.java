@@ -5,8 +5,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 
 import static org.hamcrest.core.Is.is;
@@ -64,7 +62,7 @@ public class DepartmentSortTest {
     }
 
     @Test
-    public void whenSortDescInStrangeManner() {
+    public void whenSortDesc() {
         ArrayList<String> list = new ArrayList<>();
         DepartmentSort sorter = new DepartmentSort();
         list.add("K1\\SK1\\SSK1");
