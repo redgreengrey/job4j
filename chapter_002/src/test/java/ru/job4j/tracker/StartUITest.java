@@ -32,6 +32,11 @@ public class StartUITest {
         public void accept(String s) {
             stdout.println(s);
         }
+
+        @Override
+        public String toString() {
+            return out.toString();
+        }
     };
 
     @Before
@@ -63,7 +68,7 @@ public class StartUITest {
         tracker = new Tracker();
         new StartUI(input, output, tracker).init();
         assertThat(
-                new String(out.toByteArray()),
+                this.output.toString(),
                 is(
                         new StringBuilder()
                                 .append(menu)
@@ -85,7 +90,7 @@ public class StartUITest {
         Input input = new StubInput(new String[]{"1", "n", "6", "y"});
         new StartUI(input, output, tracker).init();
         assertThat(
-                new String(out.toByteArray()),
+                this.output.toString(),
                 is(
                         new StringBuilder()
                                 .append(menu)
@@ -118,7 +123,7 @@ public class StartUITest {
                 .append(System.lineSeparator())
                 .append(menu)
                 .toString();
-        assertThat(new String(out.toByteArray()), is(expect));
+        assertThat(this.output.toString(), is(expect));
     }
 
     @Test
@@ -137,7 +142,7 @@ public class StartUITest {
                 .append(System.lineSeparator())
                 .append(menu)
                 .toString();
-        assertThat(new String(out.toByteArray()), is(expect));
+        assertThat(this.output.toString(), is(expect));
     }
 
     @Test
