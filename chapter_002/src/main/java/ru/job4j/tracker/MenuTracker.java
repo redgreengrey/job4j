@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * A class that implements the editing of an task by id.
@@ -10,7 +11,7 @@ class EditItem extends BaseAction {
         super(key, name);
     }
 
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, Tracker tracker, Consumer<String> output) {
         boolean updated = false;
         System.out.println("------------ Update item --------------");
         String id = input.ask("Enter item's id");
@@ -38,7 +39,7 @@ class DeleteItem extends BaseAction {
         super(key, name);
     }
 
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, Tracker tracker, Consumer<String> output) {
         System.out.println("------------ Delete item by id --------------");
         String id = input.ask("Enter item's id");
         boolean deleted = tracker.delete(id);
@@ -58,7 +59,7 @@ class FindItemById extends BaseAction {
         super(key, name);
     }
 
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, Tracker tracker, Consumer<String> output) {
         System.out.println("------------ Find item by id --------------");
         String id = input.ask("Enter item's id");
         Item found = tracker.findById(id);
@@ -80,7 +81,7 @@ class FindItemByName extends BaseAction {
         super(key, name);
     }
 
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, Tracker tracker, Consumer<String> output) {
         System.out.println("------------ Find item by name --------------");
         String name = input.ask("Enter item's name :");
         List<Item> items = tracker.findByName(name);
@@ -105,11 +106,14 @@ class FindItemByName extends BaseAction {
 public class MenuTracker {
     private Input input;
     private Tracker tracker;
+    private Consumer<String> output;
     private UserAction[] actions = new UserAction[7];
 
-    public MenuTracker(Input input, Tracker tracker) {
+
+    public MenuTracker(Input input, Tracker tracker, Consumer<String> output) {
         this.input = input;
         this.tracker = tracker;
+        this.output = output;
     }
 
     public void fillActions() {
@@ -123,7 +127,7 @@ public class MenuTracker {
     }
 
     public void select(int key) {
-        this.actions[key].execute(this.input, this.tracker);
+        this.actions[key].execute(this.input, this.tracker, this.output);
     }
 
     public void show() {
@@ -153,7 +157,7 @@ public class MenuTracker {
             super(key, name);
         }
 
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker, Consumer<String> output) {
             String name = input.ask("Enter item's name: ");
             String desc = input.ask("Enter item's description");
             Item item = new Item(name, desc);
@@ -170,12 +174,11 @@ public class MenuTracker {
             super(key, name);
         }
 
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker, Consumer<String> output) {
             System.out.println("------------ List of items --------------");
-            for (Item items : tracker.getAll()) {
-                System.out.println(
-                        String.format("%s: %s %s: %s %s: %s", "Id", items.getId(),
-                                "Name", items.getName(), "Description", items.getDesc()));
+            for (Item item : tracker.getAll()) {
+                output.accept(String.format("Id: %s Name: %s Desc: %s",
+                        item.getId(), item.getName(), item.getDesc()));
             }
             System.out.println("---------------------------------------");
         }
@@ -187,7 +190,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker, Consumer<String> output) {
         }
     }
 }
