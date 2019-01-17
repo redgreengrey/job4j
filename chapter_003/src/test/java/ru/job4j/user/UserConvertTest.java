@@ -15,7 +15,7 @@ public class UserConvertTest {
     @Test
     public void whenConvertListThenGetMap() {
         List<User> list = new ArrayList<>();
-        Map<Integer, User> map = new HashMap<>();
+        Map<Integer, User> map;
         Map<Integer, User> expect = new HashMap<>();
         UserConvert converter = new UserConvert();
         User first = new User(1, "Jay", "New York");
