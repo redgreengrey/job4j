@@ -5,7 +5,7 @@ import java.util.*;
 public class Bank {
     private Map<User, List<Account>> bank = new HashMap<>();
 
-    public Map<User, List<Account>> getBank() {
+    Map<User, List<Account>> getBank() {
         return bank;
     }
 
@@ -38,17 +38,17 @@ public class Bank {
      *
      * @param user - пользователь
      */
-    public void deleteUser(User user) {
+    void deleteUser(User user) {
         this.bank.remove(user);
     }
 
     /**
      * метод добавления банковского счета для пользователя
      *
-     * @param user
-     * @param account
+     * @param user user
+     * @param account account to add
      */
-    public void addAccountToUser(User user, Account account) {
+    void addAccountToUser(User user, Account account) {
         this.bank.get(user).add(account);
         this.bank.isEmpty();
     }
@@ -56,83 +56,88 @@ public class Bank {
     /**
      * метод получения списка пользовательских счетов
      *
-     * @param user
-     * @return
+     * @param user user
+     * @return list of users accounts
      */
-    public List<Account> getUserAccounts(User user) {
+    List<Account> getUserAccounts(User user) {
         return this.bank.get(user);
     }
 
     /**
      * метод удаления аккаунта пользователя по реквизитам
      *
-     * @param user
-     * @param requisites
-     * @return
+     * @param user user
+     * @param requisites requisites of user's account
+     * @return boolean
      */
-    public boolean deleteAccountFromUser(User user, Integer requisites) {
+    boolean deleteAccountFromUser(User user, Integer requisites) {
         List<Account> list = this.bank.get(user);
-        int index;
-        boolean rst = false;
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getRequisites() == requisites) {
-                index = i;
-                this.bank.get(user).remove(index);
-                rst = true;
-                break;
-            }
-        }
-        return rst;
+//        int index;
+//        boolean rst = false;
+//        for (int i = 0; i < list.size(); i++) {
+//            if (list.get(i).getRequisites() == requisites) {
+//                index = i;
+//                this.bank.get(user).remove(index);
+//                rst = true;
+//                break;
+//            }
+//        }
+//        return list.stream().filter(x -> x.getRequisites() == requisites).collect(Collectors.toList());
+        return list.removeIf(x -> x.getRequisites() == requisites);
     }
 
     /**
-     * метод нахождения пользователя по пасспорту
+     * метод нахождения пользователя по паспорту
      *
-     * @param passport
-     * @return
+     * @param passport passport of user
+     * @return user
      */
-    private User findUserByName(String passport) {
-        User user = null;
-        for (Map.Entry<User, List<Account>> entry : this.bank.entrySet()) {
-            if (passport.equals(entry.getKey().getPassport())) {
-                user = entry.getKey();
-                break;
-            }
-        }
-        return user;
+    private User findUserByPassport(String passport) {
+//        User user = null;
+//        for (Map.Entry<User, List<Account>> entry : this.bank.entrySet()) {
+//            if (passport.equals(entry.getKey().getPassport())) {
+//                user = entry.getKey();
+//                break;
+//            }
+//        }
+//        return user;
+        Optional<User> user = bank.keySet().stream().filter(x -> x.getPassport().equals(passport)).findAny();
+        return user.get();
     }
 
     /**
      * метод нахождения счета по реквизитам
      *
-     * @param passport
-     * @param requisite
-     * @return
+     * @param passport passport of given user
+     * @param requisite requisites of account
+     * @return account of user
      */
     private Account getUserAccountByRequisites(String passport, Integer requisite) {
-        Account account = null;
-        List<Account> listAccounts = this.getUserAccounts(this.findUserByName(passport));
-        for (int i = 0; listAccounts != null && i < listAccounts.size(); i++) {
-            if (requisite.equals(listAccounts.get(i).getRequisites())) {
-                account = listAccounts.get(i);
-                break;
-            }
-        }
-        return account;
+//        Account account = null;
+        List<Account> listAccounts = this.getUserAccounts(this.findUserByPassport(passport));
+//        for (int i = 0; listAccounts != null && i < listAccounts.size(); i++) {
+//            if (requisite.equals(listAccounts.get(i).getRequisites())) {
+//                account = listAccounts.get(i);
+//                break;
+//            }
+//        }
+//        return account;
+
+        return listAccounts.stream().filter(x -> x.getRequisites() == requisite).findAny().get();
     }
 
     /**
      * метод перевода средств
      *
-     * @param srcPassport
-     * @param srcRequisite
-     * @param dstPassport
-     * @param dstRequisite
-     * @param amount
-     * @return
+     * @param srcPassport source passport
+     * @param srcRequisite source requisite
+     * @param dstPassport destination passport
+     * @param dstRequisite destination requisite
+     * @param amount amount of transferred money
+     * @return boolean
      */
-    public boolean transferMoney(String srcPassport, Integer srcRequisite,
-                                 String dstPassport, Integer dstRequisite, double amount) {
+    boolean transferMoney(String srcPassport, Integer srcRequisite,
+                          String dstPassport, Integer dstRequisite, double amount) {
         boolean result = false;
         Account firstAccount = this.getUserAccountByRequisites(srcPassport, srcRequisite);
         Account secondAccount = this.getUserAccountByRequisites(dstPassport, dstRequisite);
