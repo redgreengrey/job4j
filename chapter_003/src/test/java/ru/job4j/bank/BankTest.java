@@ -23,9 +23,16 @@ public class BankTest {
     }
 
     @Test
-    public void whenAddUserthenBankHasHim() {
+    public void whenAddUserThenBankHasHim() {
         bank.addUser(first);
         assertThat(bank.getBank().containsKey(first), is(true));
+    }
+
+    @Test
+    public void whenAddNullUser() {
+        User nullUser = null;
+        bank.addUser(nullUser);
+        assertThat(bank.getBank().containsKey(nullUser), is(true));
     }
 
     @Test
