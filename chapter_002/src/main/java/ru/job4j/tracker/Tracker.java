@@ -3,10 +3,13 @@ package ru.job4j.tracker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Tracker {
     private List<Item> items = new ArrayList<>();
-//    private int position = 0;
     private static final Random RANDOM = new Random();
 
     /**
@@ -44,13 +47,6 @@ public class Tracker {
                     items.set(i, item);
                 }
             }
-//            for (int i = 0; i != position; i++) {
-//                if (items.get(i).getId().equals(findById(id).getId())) {
-//                    this.items.set(i, item);
-//                    this.items.get(i).setId(id);
-//                    break;
-//                }
-//            }
         }
         return result;
     }
@@ -62,14 +58,8 @@ public class Tracker {
      * @return Item
      */
     public Item findById(String id) {
-        Item result = null;
-        for (Item item : this.items) {
-            if (item != null && item.getId().equals(id)) {
-                result = item;
-                break;
-            }
-        }
-        return result;
+        List<Item> result = this.items.stream().filter(x -> x.getId().equals(id)).collect(Collectors.toList());
+        return result.stream().findFirst().orElse(null);
     }
 
     /**
@@ -79,21 +69,8 @@ public class Tracker {
      * @return Item
      */
     public List<Item> findByName(String key) {
-        List<Item> itemsList = new ArrayList<>();
-        for (Item item : this.items) {
-            if (item.getName().equals(key)) {
-                itemsList.add(item);
-            }
-        }
-//        Item[] result = new Item[position];
-//        int max = 0;
-//        for (int i = 0; i < position; i++) {
-//            if ((this.items.get(i) != null) && (this.items.get(i).getName().equals(key))) {
-//                result[max] = items.get(i);
-//                max++;
-//            }
-//        }
-//        return Arrays.copyOf(result, max);
+        List<Item> itemsList = new ArrayList<>(this.items);
+        itemsList.stream().filter(x -> x.getName().equals(key)).collect(Collectors.toList());
         return itemsList;
     }
 
@@ -105,15 +82,6 @@ public class Tracker {
      */
     public boolean delete(String id) {
         boolean result = false;
-//        for (int i = 0; i < position; i++) {
-//            if ((this.items.get(i) != null) && (this.items.get(i).getId().equals(id))) {
-//                System.arraycopy(items, i + 1, items, i, items.length - i - 1);
-//                position--;
-//                result = true;
-//                break;
-//            }
-//        }
-
         for (int i = 0; i < this.items.size(); i++) {
             if (this.items.get(i).getId().equals(id)) {
                 this.items.remove(i);
