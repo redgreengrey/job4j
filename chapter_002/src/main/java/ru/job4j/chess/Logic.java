@@ -6,6 +6,10 @@ import ru.job4j.chess.exceptions.OccupiedWayException;
 import ru.job4j.chess.figures.Cell;
 import ru.job4j.chess.figures.Figure;
 
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
+
 /**
  * @author Vlad Dudin
  * @version $Id$
@@ -22,19 +26,21 @@ public class Logic {
     public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, OccupiedWayException,
             FigureNotFoundException {
         boolean rst = false;
-        int index = this.findBy(source);
-        if (index == -1) {
+        Optional<Integer> index = this.findBy(source);
+        Optional<Integer> seek = this.findBy(dest);
+        if (!index.isPresent()) {
             throw new FigureNotFoundException();
         }
-        Cell[] steps = this.figures[index].way(source, dest);
+        Cell[] steps = this.figures[index.get()].way(source, dest);
         for (Cell step : steps) {
-            if (findBy(step) != -1) {
+            Optional<Integer> empty = findBy(step);
+            if (findBy(step).isPresent()) {
                 throw new OccupiedWayException();
             }
         }
-        if (steps.length > 0) {
+        if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
             rst = true;
-            this.figures[index] = this.figures[index].copy(dest);
+            this.figures[index.get()] = this.figures[index.get()].copy(dest);
         }
         return rst;
     }
@@ -46,14 +52,17 @@ public class Logic {
         this.index = 0;
     }
 
-    private int findBy(Cell cell) {
-        int rst = -1;
-        for (int index = 0; index != this.figures.length; index++) {
-            if (this.figures[index] != null && this.figures[index].position().equals(cell)) {
-                rst = index;
-                break;
-            }
-        }
-        return rst;
+    private Optional<Integer> findBy(Cell cell) {
+//        int rst = -1;
+//        for (int index = 0; index != this.figures.length; index++) {
+//            if (this.figures[index] != null && this.figures[index].position().equals(cell)) {
+//                rst = index;
+//                break;
+//            }
+//        }
+//        return rst;
+
+        return IntStream.range(0, this.figures.length)
+                .filter(x -> this.figures[x] != null && this.figures[x].position().equals(cell)).boxed().findFirst();
     }
 }
