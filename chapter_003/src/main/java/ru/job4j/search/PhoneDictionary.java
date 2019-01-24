@@ -18,7 +18,7 @@ public class PhoneDictionary {
      * @return Список подошедших пользователей.
      */
     public List<Person> find(String key) {
-        return persons.stream().filter(x -> x.getAddress().contains(key)
+         return persons.stream().filter(x -> x.getAddress().contains(key)
                 || x.getName().equals(key)
                 || x.getSurname().equals(key)
                 || x.getPhone().equals(key)).collect(Collectors.toList());
