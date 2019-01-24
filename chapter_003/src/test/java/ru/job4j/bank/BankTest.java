@@ -48,10 +48,10 @@ public class BankTest {
         bank.addAccountToUser(this.first, new Account(1, 456456));
         bank.addAccountToUser(this.first, new Account(5, 555555));
         List<Account> result = bank.getUserAccounts(this.first);
-        List<Account> expect = new ArrayList<>(Arrays.asList(
+        List<Account> expect = List.of(
                 new Account(1, 456456),
                 new Account(5, 555555)
-        ));
+        );
         assertThat(result.get(1).toString(), is(expect.get(1).toString()));
     }
 
@@ -91,7 +91,6 @@ public class BankTest {
         bank.addUser(first);
         bank.addUser(second);
         bank.addAccountToUser(first, new Account(50000, 555555));
-//        bank.addAccountToUser(first, new Account(50000, 555555));
         bank.addAccountToUser(second, new Account(50000, 666666));
         double amount = 10000;
         boolean result = bank.transferMoney(first.getPassport(), 555555,

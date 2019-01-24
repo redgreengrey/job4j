@@ -13,14 +13,10 @@ public class SortUserTest {
         SortUser sortUser = new SortUser();
         User first = new User(1, "John", "London", 20);
         User second = new User(2, "Joe", "Washington", 30);
-        List<User> usersList = new ArrayList<>();
-        usersList.add(second);
-        usersList.add(first);
+        List<User> usersList = List.of(first, second);
         Set<User> result = sortUser.sort(usersList);
-        Set<User> expect = new TreeSet<>();
-        expect.add(second);
-        expect.add(first);
-        assertThat(result, is(expect));
+        Set<User> expected = Set.of(first, second);
+        assertThat(result, is(expected));
     }
 
     @Test
@@ -31,9 +27,7 @@ public class SortUserTest {
         List<User> list = new ArrayList<>();
         list.add(second);
         list.add(first);
-        List<User> expect = new ArrayList<>();
-        expect.add(first);
-        expect.add(second);
+        List<User> expect = List.of(first, second);
         List<User> result = sortUser.sortNameLength(list);
         assertThat(result.get(0).getName(), is(expect.get(0).getName()));
     }
@@ -54,19 +48,15 @@ public class SortUserTest {
     }
 
     @Test
-    public void whenSortAllFieldsThenGiveSortedlist() {
+    public void whenSortAllFieldsThenGiveSortedList() {
         SortUser sortUser = new SortUser();
-        List<User> list = new ArrayList<>();
-        list.addAll(
-                Arrays.asList(
-                        new User(0, "Billy", "Fargo", 44),
-                        new User(2, "Lester", "Fargo", 41),
-                        new User(1, "Gus", "Fargo", 32),
-                        new User(3, "Gus", "Fargo", 23)
-                )
-        );
+        List<User> list = new ArrayList<>(Arrays.asList(
+                new User(0, "Billy", "Fargo", 44),
+                new User(2, "Lester", "Fargo", 41),
+                new User(1, "Gus", "Fargo", 32),
+                new User(3, "Gus", "Fargo", 23)
+        ));
         sortUser.sortByAllFields(list);
-        System.out.println(list);
         assertThat(list.get(0).getAge(), is(44));
     }
 }

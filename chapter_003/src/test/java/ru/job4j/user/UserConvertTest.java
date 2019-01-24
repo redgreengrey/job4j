@@ -16,15 +16,13 @@ public class UserConvertTest {
     public void whenConvertListThenGetMap() {
         List<User> list = new ArrayList<>();
         Map<Integer, User> map;
-        Map<Integer, User> expect = new HashMap<>();
         UserConvert converter = new UserConvert();
         User first = new User(1, "Jay", "New York");
         User second = new User(2, "Bob", "London");
         list.add(first);
         list.add(second);
         map = converter.process(list);
-        expect.put(first.getId(), first);
-        expect.put(second.getId(), second);
+        Map<Integer, User> expect = Map.of(first.getId(), first, second.getId(), second);
         assertThat(map, is(expect));
     }
 }
