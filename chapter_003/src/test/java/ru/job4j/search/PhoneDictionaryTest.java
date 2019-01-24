@@ -11,11 +11,12 @@ public class PhoneDictionaryTest {
     @Test
     public void whenFindByName() {
         PhoneDictionary phones = new PhoneDictionary();
+        var expected = new Person("Petr", "Arsentev", "534872", "Bryansk");
         phones.add(
                 new Person("Petr", "Arsentev", "534872", "Bryansk")
         );
         List<Person> persons = phones.find("Petr");
-        assertThat(persons.iterator().next().getSurname(), is("Arsentev"));
+        assertThat(persons.iterator().next().getSurname(), is(expected.getSurname()));
     }
 
     @Test
@@ -25,6 +26,7 @@ public class PhoneDictionaryTest {
                 new Person("Petr", "Arsentev", "534872", "Bryansk")
         );
         List<Person> persons = phones.find("Petr");
-        assertThat(persons.iterator().next().getPhone(), is("534872"));
+        var expected = "534872";
+        assertThat(persons.iterator().next().getPhone(), is(expected));
     }
 }
