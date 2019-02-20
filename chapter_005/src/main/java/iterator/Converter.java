@@ -3,41 +3,32 @@ package iterator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Converter {
+class Converter {
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
-        return new Iterator<>() {
-            private Iterator<Integer> currentIterator;
-
-            private void check() {
-                if (currentIterator == null && it.hasNext()) {
-                    currentIterator = it.next();
-                }
-            }
+        return new Iterator<Integer>() {
+            Iterator<Integer> currentIterator = it.next();
 
             @Override
             public boolean hasNext() {
-                check();
-                if (currentIterator == null) {
-                    return false;
-                }
+                boolean res = false;
                 if (currentIterator.hasNext()) {
-                    return true;
+                    res = true;
+                } else {
+                    while (it.hasNext()) {
+                        currentIterator = it.next();
+                        if (currentIterator.hasNext()) {
+                            res = true;
+                            break;
+                        }
+                    }
                 }
-                if (it.hasNext()) {
-                    currentIterator = it.next();
-                }
-                return currentIterator.hasNext();
+                return res;
             }
 
             @Override
             public Integer next() {
-                check();
-                if (currentIterator == null) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-
-                if (!currentIterator.hasNext() && it.hasNext()) {
-                    currentIterator = it.next();
                 }
                 return currentIterator.next();
             }
